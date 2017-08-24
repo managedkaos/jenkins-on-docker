@@ -25,6 +25,16 @@ pipeline {
                 // sh '/usr/local/bin/docker pull jenkins'
             }
         }
+        stage('Run') {
+            steps {
+                echo "Running jenkins container ..."
+            }
+        }
+        stage('Finalize') {
+            steps {
+                echo "Waiting for jenkins process to start ..."
+            }
+        }
     }
 }
 
