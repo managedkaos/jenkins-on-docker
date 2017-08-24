@@ -21,7 +21,7 @@ pipeline {
                 expression { params.Pull_Existing == true }
             }
             steps {
-                echo "Pull lastet Jenkins container image"
+                echo "Pulling lastet Jenkins container image"
                 // sh '/usr/local/bin/docker pull jenkins'
             }
         }
