@@ -37,8 +37,8 @@ pipeline {
                 echo "Waiting for jenkins process to start ..."
                 sleep 15
                 script {
-                    def password = sh "/usr/local/bin/docker exec ${params.Name} cat /var/jenkins_home/secrets/initialAdminPassword"
-                    echo "Password is ${password}\nBrowse to http://localhost:${params.Port}"
+                    env[initialAdminPassword] = sh(script:  "/usr/local/bin/docker exec ${params.Name} cat /var/jenkins_home/secrets/initialAdminPassword", returnStdout: true).trim()
+                    echo "Password is ${env.initialAdminPassword}\nBrowse to http://localhost:${params.Port}"
                 }
             }
         }
