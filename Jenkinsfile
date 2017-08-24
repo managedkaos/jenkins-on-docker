@@ -13,7 +13,7 @@ pipeline {
             }
             steps {
                 echo "Stopping exisiting container with name ${params.Name} ..."
-                // sh "/usr/local/bin/docker stop ${params.Name}"
+                sh "/usr/local/bin/docker stop ${params.Name}"
             }
         }
         stage('Pull Latest') {
@@ -22,7 +22,7 @@ pipeline {
             }
             steps {
                 echo "Pulling lastet Jenkins container image"
-                // sh '/usr/local/bin/docker pull jenkins'
+                sh '/usr/local/bin/docker pull jenkins'
             }
         }
         stage('Run') {
