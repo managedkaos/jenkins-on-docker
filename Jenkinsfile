@@ -37,9 +37,7 @@ pipeline {
                 echo "Waiting for jenkins process to start ..."
                 sleep 30
                 echo "Here's the admin password!"
-                waitUntil {
-                    sh "/usr/local/bin/docker exec ${params.Name} cat /var/jenkins_home/secrets/initialAdminPassword"
-                }
+                sh "/usr/local/bin/docker exec ${params.Name} cat /var/jenkins_home/secrets/initialAdminPassword"
                 echo "Browse to http://localhost:${params.Port}"
             }
         }
