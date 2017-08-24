@@ -22,17 +22,21 @@ pipeline {
             }
             steps {
                 echo "Pulling lastet Jenkins container image"
-                sh '/usr/local/bin/docker pull jenkins'
+                sh "/usr/local/bin/docker pull jenkins"
             }
         }
         stage('Run') {
             steps {
                 echo "Running jenkins container ..."
+                sh "/usr/loca/bin/docker run --detach --publish ${params.Port}:8080 --name ${params.Name} jenkins"
             }
         }
         stage('Finalize') {
             steps {
                 echo "Waiting for jenkins process to start ..."
+                waitUntil {
+                    sh "/usr/local/bin/docker exec ${params.Name} cat /var/jenkins_home/secrets/initialAdminPassword"
+                }
             }
         }
     }
@@ -43,7 +47,6 @@ function jenkinsondocker() {
     docker stop jenkins || echo "Nothing to see here! :D"
     docker rm jenkins || echo "Nothing to see here! :D"
     docker pull jenkins
-    docker run --detach --publish 49000:8080 --name jenkins jenkins
     echo "Waiting for Jenkins process to start ...."
     for i in {0..30};
     do
@@ -52,7 +55,6 @@ function jenkinsondocker() {
     done
     echo
     echo -n "Here's the admin password!    "
-    docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
     echo "Browse to http://localhost:49000"
 }
 */
