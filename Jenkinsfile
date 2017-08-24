@@ -14,6 +14,7 @@ pipeline {
             steps {
                 echo "Stopping exisiting container with name ${params.Name} ..."
                 sh "/usr/local/bin/docker stop ${params.Name}"
+                sh "/usr/local/bin/docker rm ${params.Name}"
             }
         }
         stage('Pull Latest') {
