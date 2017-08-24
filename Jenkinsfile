@@ -35,27 +35,13 @@ pipeline {
         stage('Finalize') {
             steps {
                 echo "Waiting for jenkins process to start ..."
+                sleep 30
+                echo "Here's the admin password!"
                 waitUntil {
                     sh "/usr/local/bin/docker exec ${params.Name} cat /var/jenkins_home/secrets/initialAdminPassword"
                 }
+                echo "Browse to http://localhost:${params.Port}"
             }
         }
     }
 }
-
-/*
-function jenkinsondocker() {
-    docker stop jenkins || echo "Nothing to see here! :D"
-    docker rm jenkins || echo "Nothing to see here! :D"
-    docker pull jenkins
-    echo "Waiting for Jenkins process to start ...."
-    for i in {0..30};
-    do
-        echo -n "."
-        sleep 1
-    done
-    echo
-    echo -n "Here's the admin password!    "
-    echo "Browse to http://localhost:49000"
-}
-*/
