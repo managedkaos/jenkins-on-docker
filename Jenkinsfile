@@ -16,9 +16,9 @@ pipeline {
                 // sh "/usr/local/bin/docker stop ${params.Name}"
             }
         }
-        stage('Prepare') {
+        stage('Pull Latest') {
             when {
-                expression { params.Pull_Existing == true }
+                expression { params.Pull_Latest == true }
             }
             steps {
                 echo "Pulling lastet Jenkins container image"
