@@ -35,10 +35,11 @@ pipeline {
         stage('Finalize') {
             steps {
                 echo "Waiting for jenkins process to start ..."
-                sleep 30
-                echo "Here's the admin password!"
-                sh "/usr/local/bin/docker exec ${params.Name} cat /var/jenkins_home/secrets/initialAdminPassword"
-                echo "Browse to http://localhost:${params.Port}"
+                sleep 15
+                script {
+                    def password = sh "/usr/local/bin/docker exec ${params.Name} cat /var/jenkins_home/secrets/initialAdminPassword"
+                    echo "Password is $password\nBrowse to http://localhost:${params.Port}"
+                }
             }
         }
     }
