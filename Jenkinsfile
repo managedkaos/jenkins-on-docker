@@ -29,7 +29,7 @@ pipeline {
         stage('Run') {
             steps {
                 echo "Running jenkins container ..."
-                sh "/Applications/Docker.app/Contents/Resources/bin/docker run --detach --publish ${params.Port}:8080 --name ${params.Name} jenkins"
+                sh "/usr/local/bin/docker run --detach --publish ${params.Port}:8080 --name ${params.Name} jenkins"
             }
         }
         stage('Finalize') {
