@@ -35,7 +35,7 @@ pipeline {
         stage('Finalize') {
             steps {
                 echo "Waiting for jenkins process to start ..."
-                sh "until [ \$(curl -o /dev/null --silent --head --write-out '%{http_code}\n' http://127.0.0.1:49000) -eq 403 ]; do echo -n '.'; sleep 1; done"
+                sleep 15                
                 script {
                     def initialAdminPassword = sh(script:  "/usr/local/bin/docker exec ${params.Name} cat /var/jenkins_home/secrets/initialAdminPassword", returnStdout: true).trim()
                     echo "Password is ${initialAdminPassword}\nBrowse to http://localhost:${params.Port}"
