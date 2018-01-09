@@ -23,7 +23,7 @@ pipeline {
             }
             steps {
                 echo "Pulling lastet Jenkins container image"
-                sh "/usr/local/bin/docker pull jenkins"
+                sh "/usr/local/bin/docker pull jenkins/jenkins:lts"
             }
         }
         stage('Run') {
