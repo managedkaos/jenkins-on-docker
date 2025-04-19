@@ -12,7 +12,7 @@ docker exec --user root jenkins-on-docker \
 ## download the list of plugins
 echo "# $(date) Downloading the list of plugins..."
 docker exec --user root jenkins-on-docker \
-    /usr/bin/wget https://raw.githubusercontent.com/jenkinsci/jenkins/master/core/src/main/resources/jenkins/install/platform-plugins.json
+    wget -q https://raw.githubusercontent.com/jenkinsci/jenkins/master/core/src/main/resources/jenkins/install/platform-plugins.json
 
 ## get the suggested plugins
 ## note the 'grep -v name' hack to account for an error in processing the list
@@ -23,7 +23,7 @@ docker exec --user root jenkins-on-docker \
 ## download the plugin installation tool
 echo "# $(date) Downloading the plugin installation tool"
 docker exec --user root jenkins-on-docker \
-    bash -c 'wget https://github.com/jenkinsci/plugin-installation-manager-tool/releases/download/2.13.0/jenkins-plugin-manager-2.13.0.jar'
+    bash -c 'wget -q https://github.com/jenkinsci/plugin-installation-manager-tool/releases/download/2.13.0/jenkins-plugin-manager-2.13.0.jar'
 
 ## run the plugin installation tool
 echo "# $(date) Running the plugin installation tool..."

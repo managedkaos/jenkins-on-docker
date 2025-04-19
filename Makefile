@@ -14,7 +14,7 @@ all: pull start plugins go
 pull:
 	docker pull jenkins/jenkins:lts
 
-start:
+start-jenkins:
 	@echo "# $(shell date) Starting Jenkins container..."
 	@if [ ! -d $(JENKINS_DATA) ]; then mkdir -p $(JENKINS_DATA); fi
 	-@docker run --detach \
@@ -27,7 +27,7 @@ start:
 	@./scripts/wait-for-jenkins.sh
 	@$(MAKE) get-admin-password
 
-plugins:
+instsall-plugins:
 	@./scripts/install-plugins.sh
 	@$(MAKE) get-admin-password
 
@@ -41,7 +41,10 @@ go:
 exec:
 	-@docker exec -it jenkins-on-docker bash
 
-stop:
+root-exec:
+	-@docker exec -it --user root jenkins-on-docker bash
+
+stop-jenkins:
 	-@docker stop jenkins-on-docker || \
 		printf "Is the container already stopped?\n\n"
 
