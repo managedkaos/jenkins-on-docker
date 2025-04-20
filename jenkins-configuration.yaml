@@ -56,10 +56,10 @@ jobs:
                       cron("H/5 * * * *")
                   }
                   steps {
-                    shell('''
+                    shell("""
                       #!/bin/bash
                       echo Hello ^${JOB_NAME}!
-                    ''')
+                    """)
                   }
                 }
               } catch (Exception e) {
