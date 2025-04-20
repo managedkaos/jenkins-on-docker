@@ -12,7 +12,7 @@ requirements:
 all: pull start-jenkins install-plugins get-admin-password go
 
 pull:
-	docker pull jenkins/jenkins:lts
+	docker pull jenkins/jenkins:lts-jdk21
 
 start-jenkins:
 	@echo "# $(shell date) Starting Jenkins container..."
@@ -20,9 +20,10 @@ start-jenkins:
 	-@docker run --detach \
 		--volume $(JENKINS_DATA):/var/jenkins_home \
 		--restart always \
+		--env CASC_JENKINS_CONFIG=/var/jenkins_home/userContent \
 		--publish 60000:8080 \
 		--name jenkins-on-docker \
-		jenkins/jenkins:lts || \
+		jenkins/jenkins:lts-jdk21 || \
 		printf "\nIs the container already running?\n\n"
 	@./scripts/wait-for-jenkins.sh
 

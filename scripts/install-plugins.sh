@@ -4,11 +4,6 @@
 echo "# $(date) Configuring Jenkins..."
 docker exec --user root jenkins-on-docker bash -c "apt update && apt install wget && which wget"
 
-## skip the installation wizard at startup
-echo "# $(date) Skipping the installation wizard on first boot..."
-docker exec --user root jenkins-on-docker \
-    bash -c "echo 'JAVA_ARGS=\"-Djenkins.install.runSetupWizard=false\"' >> /etc/default/jenkins"
-
 ## download the list of plugins
 echo "# $(date) Downloading the list of plugins..."
 docker exec --user root jenkins-on-docker \
@@ -20,9 +15,12 @@ echo "# $(date) Using the keyword 'suggest' to find the suggested plugins in the
 docker exec --user root jenkins-on-docker \
     bash -c 'grep suggest platform-plugins.json | cut -d\" -f 4 | grep -v name | tee suggested-plugins.txt'
 
-# include dark-theme
-docker exec --user root jenkins-on-docker \
-    bash -c 'echo dark-theme >> suggested-plugins.txt'
+# include additional plugins
+for i in dark-theme configuration-as-code;
+do
+    docker exec --user root jenkins-on-docker \
+        bash -c "echo ${i} >> suggested-plugins.txt"
+done
 
 ## download the plugin installation tool
 echo "# $(date) Downloading the plugin installation tool"
@@ -36,6 +34,8 @@ docker exec --user root jenkins-on-docker \
     --verbose \
     --plugin-download-directory=/var/jenkins_home/plugins \
     --plugin-file=./suggested-plugins.txt | tee /var/log/plugin-installation.log'
+
+cp ./jenkins-configuration.yaml $(pwd)/data_volume/userContent
 
 # The container must be restarted to pick up the new configuration
 echo "# $(date) Restarting Jenkins container..."

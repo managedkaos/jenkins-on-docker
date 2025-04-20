@@ -1,0 +1,32 @@
+jenkins:
+  systemMessage: "Jenkins Configuration as Code plugin"
+
+  # Security Realm for user authentication
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: "michael"
+          password: "demo"
+
+
+  # Authorization Strategy
+  authorizationStrategy:
+    projectMatrix:
+      entries:
+        - user:
+            name: admin
+            permissions:
+              - Overall/Administer
+        - user:
+            name: michael
+            permissions:
+              - Overall/Administer
+
+
+# Tool Configuration
+tool:
+  git:
+    installations:
+      - name: "Default"
+        home: "/usr/bin/git"
