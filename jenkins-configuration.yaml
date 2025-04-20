@@ -1,5 +1,5 @@
 jenkins:
-  systemMessage: "Jenkins Configuration as Code plugin"
+  systemMessage: "Welcome to Jenkins"
 
   # Security Realm for user authentication
   securityRealm:
@@ -30,3 +30,65 @@ tool:
     installations:
       - name: "Default"
         home: "/usr/bin/git"
+
+jobs:
+  - script: |
+      try {
+        // Define teams and job types
+        def teams = ['Cyclones', 'Clippers', 'Hawks', 'Heat', 'Hornets', 'Lakers', 'Magic', 'Warriors']
+        def jobTypes = ['Build', 'Test', 'Deploy']
+
+        // Create folders and jobs for each team
+        teams.each { team ->
+          try {
+            folder(team) {
+              description("This folder contains Jobs for ^${team}")
+              displayName(team)
+            }
+
+            // Create jobs within the folder
+            jobTypes.each { jobType ->
+              def jobName = "^${team}-^${jobType}"
+              try {
+                pipelineJob(jobName) {
+                  description("^${jobType} job for ^${team}")
+                  displayName(jobType)
+
+                  triggers {
+                    cron('@hourly')
+                  }
+
+                  definition {
+                    cps {
+                      script("""
+                        pipeline {
+                          agent any
+                          stages {
+                            stage('^${jobType}') {
+                              steps {
+                                sh '''
+                                  echo
+                                  echo "JOB NAME: ^${JOB_NAME}"
+                                  echo
+                                '''
+                              }
+                            }
+                          }
+                        }
+                      """)
+                      sandbox()
+                    }
+                  }
+                }
+              } catch (Exception e) {
+                e.printStackTrace()
+              }
+            }
+          } catch (Exception e) {
+            e.printStackTrace()
+          }
+        }
+
+      } catch (Exception e) {
+        e.printStackTrace()
+      }

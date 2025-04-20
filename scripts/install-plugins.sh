@@ -16,7 +16,7 @@ docker exec --user root jenkins-on-docker \
     bash -c 'grep suggest platform-plugins.json | cut -d\" -f 4 | grep -v name | tee suggested-plugins.txt'
 
 # include additional plugins
-for i in dark-theme configuration-as-code;
+for i in dark-theme configuration-as-code job-dsl-plugin;
 do
     docker exec --user root jenkins-on-docker \
         bash -c "echo ${i} >> suggested-plugins.txt"
