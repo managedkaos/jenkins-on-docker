@@ -1,4 +1,2 @@
-honcho
-jenkins-webapi
-pylint
-yamllint
+jenkinsapi
+requests

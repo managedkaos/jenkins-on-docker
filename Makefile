@@ -9,7 +9,7 @@ development-requirements: requirements
 requirements:
 	@pip install --requirement requirements.txt
 
-all: pull start plugins go
+all: pull start-jenkins install-plugins get-admin-password go
 
 pull:
 	docker pull jenkins/jenkins:lts
@@ -25,14 +25,12 @@ start-jenkins:
 		jenkins/jenkins:lts || \
 		printf "\nIs the container already running?\n\n"
 	@./scripts/wait-for-jenkins.sh
-	@$(MAKE) get-admin-password
 
-instsall-plugins:
+install-plugins:
 	@./scripts/install-plugins.sh
-	@$(MAKE) get-admin-password
 
 get-admin-password:
-	@./scripts/get-admin-password.sh
+	-@./scripts/get-admin-password.sh
 
 go:
 	@echo "# http://localhost:60000"
@@ -48,10 +46,12 @@ stop-jenkins:
 	-@docker stop jenkins-on-docker || \
 		printf "Is the container already stopped?\n\n"
 
-clean: stop
+clean: stop-jenkins
 	-@docker rm jenkins-on-docker || \
 		printf "Is the container already removed?\n\n"
 
 nuke: clean
 	-@rm -rf $(JENKINS_DATA) || \
 		printf "Is the data directory already removed?\n\n"
+
+.PHONY: help development-requirements requirements all pull start-jenkins install-plugins get-admin-password go exec root-exec stop-jenkins clean nuke

@@ -20,6 +20,10 @@ echo "# $(date) Using the keyword 'suggest' to find the suggested plugins in the
 docker exec --user root jenkins-on-docker \
     bash -c 'grep suggest platform-plugins.json | cut -d\" -f 4 | grep -v name | tee suggested-plugins.txt'
 
+# include dark-theme
+docker exec --user root jenkins-on-docker \
+    bash -c 'echo dark-theme >> suggested-plugins.txt'
+
 ## download the plugin installation tool
 echo "# $(date) Downloading the plugin installation tool"
 docker exec --user root jenkins-on-docker \
