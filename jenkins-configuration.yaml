@@ -38,7 +38,7 @@ jobs:
         def teams = ['Cyclones', 'Clippers', 'Hawks', 'Heat', 'Hornets', 'Lakers', 'Magic', 'Warriors']
         def jobTypes = ['Build', 'Test', 'Deploy']
 
-        // Create folders and jobs for each team
+        // Create folders each team
         teams.each { team ->
           try {
             folder(team) {
@@ -46,38 +46,20 @@ jobs:
               displayName(team)
             }
 
-            // Create jobs within the folder
+            // Create jobs within each folder
             jobTypes.each { jobType ->
-              def jobName = "^${team}-^${jobType}"
+              def jobName = "^${team}/^${jobType}"
               try {
-                pipelineJob(jobName) {
-                  description("^${jobType} job for ^${team}")
-                  displayName(jobType)
-
+                freeStyleJob(jobName) {
+                  description("\nThis is the ^${jobType} job for the ^${team}")
                   triggers {
-                    cron('@hourly')
+                      cron("H/5 * * * *")
                   }
-
-                  definition {
-                    cps {
-                      script("""
-                        pipeline {
-                          agent any
-                          stages {
-                            stage('^${jobType}') {
-                              steps {
-                                sh '''
-                                  echo
-                                  echo "JOB NAME: ^${JOB_NAME}"
-                                  echo
-                                '''
-                              }
-                            }
-                          }
-                        }
-                      """)
-                      sandbox()
-                    }
+                  steps {
+                    shell('''
+                      #!/bin/bash
+                      echo Hello ^${JOB_NAME}!
+                    ''')
                   }
                 }
               } catch (Exception e) {
@@ -88,7 +70,6 @@ jobs:
             e.printStackTrace()
           }
         }
-
       } catch (Exception e) {
         e.printStackTrace()
       }
