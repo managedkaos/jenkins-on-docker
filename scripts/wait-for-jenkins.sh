@@ -5,4 +5,4 @@ until [ $(curl -o /dev/null --silent --head --write-out '%{http_code}\n' http://
     sleep 1;
 done
 
-ADMIN_PASS=$(docker exec jenkins-on-docker cat /var/jenkins_home/secrets/initialAdminPassword)
+# ADMIN_PASS=$(docker exec jenkins-on-docker cat /var/jenkins_home/secrets/initialAdminPassword)
