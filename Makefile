@@ -17,7 +17,8 @@ pull:
 start-jenkins:
 	@echo "# $(shell date) Starting Jenkins container..."
 	@if [ ! -d $(JENKINS_DATA) ]; then mkdir -p $(JENKINS_DATA); fi
-	-@docker run --detach \
+	-@docker start jenkins-on-docker || \
+	docker run --detach \
 		--volume $(JENKINS_DATA):/var/jenkins_home \
 		--restart always \
 		--env CASC_JENKINS_CONFIG=/var/jenkins_home/userContent \
